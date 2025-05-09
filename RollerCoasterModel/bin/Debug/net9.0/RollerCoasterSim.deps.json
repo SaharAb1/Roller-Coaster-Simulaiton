@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v9.0": {
       "RollerCoasterSim/1.0.0": {
         "dependencies": {
-          "OpenTK": "4.7.6"
+          "OpenTK": "4.7.6",
+          "StbImageSharp": "2.30.15"
         },
         "runtime": {
           "RollerCoasterSim.dll": {}
@@ -153,6 +154,14 @@
           }
         }
       },
+      "StbImageSharp/2.30.15": {
+        "runtime": {
+          "lib/netstandard2.0/StbImageSharp.dll": {
+            "assemblyVersion": "2.30.15.0",
+            "fileVersion": "2.30.15.0"
+          }
+        }
+      },
       "System.Runtime.CompilerServices.Unsafe/5.0.0": {}
     }
   },
@@ -238,6 +247,13 @@
       "sha512": "sha512-Cmi4gH5YZW/AxuqLtzz63vDDb8xqNj6n3jsg8rvPA8zQuNOHEs8Qx8JBd8hO4nICRpdEIZBgxIUG1VQfHzfKbw==",
       "path": "opentk.windowing.graphicslibraryframework/4.7.6",
       "hashPath": "opentk.windowing.graphicslibraryframework.4.7.6.nupkg.sha512"
+    },
+    "StbImageSharp/2.30.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7QqbupVhz2kcFUPTgMw4iHR9rYDHGundzzee19Mwmd1typ2Lnv8EVJcLJxlkeBM2+4ex0NwsMtdbGSJctp1XCQ==",
+      "path": "stbimagesharp/2.30.15",
+      "hashPath": "stbimagesharp.2.30.15.nupkg.sha512"
     },
     "System.Runtime.CompilerServices.Unsafe/5.0.0": {
       "type": "package",

@@ -9,9 +9,9 @@ namespace RollerCoasterSim
 {
     public class MainWindow : GameWindow
     {
+        private UICursor _uiCursor;
         private FreeCamera camera;
-        private Vector2 lastMousePos;
-        private bool firstMove = true;
+        private bool isDragging = false;
 
         public MainWindow(int width, int height, string title)
             : base(GameWindowSettings.Default, new NativeWindowSettings()
@@ -29,15 +29,16 @@ namespace RollerCoasterSim
 
             GL.ClearColor(Color4.CornflowerBlue);
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            CursorGrabbed = true;
-            CursorState = CursorState.Grabbed;
+            CursorState = CursorState.Normal;
 
             camera = new FreeCamera(new Vector3(0, 0, 3));
+            _uiCursor = new UICursor("Assets/UI/hand_cursor.png");
 
             Renderer.Init();
         }
-
 
         protected override void OnRenderFrame(FrameEventArgs args)
         {
@@ -49,7 +50,12 @@ namespace RollerCoasterSim
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(70f), Size.X / (float)Size.Y, 0.1f, 100f);
 
             Renderer.Draw(view, projection);
-            GL.BindVertexArray(0);
+
+            if (isDragging)
+            {
+                var mouse = MouseState.Position;
+                _uiCursor.Draw(mouse, new Vector2(Size.X, Size.Y));
+            }
 
             SwapBuffers();
         }
@@ -62,35 +68,56 @@ namespace RollerCoasterSim
                 return;
 
             var input = KeyboardState;
-            float delta = (float)args.Time;
-            Vector3 direction = Vector3.Zero;
+            float scroll = MouseState.ScrollDelta.Y;
+            if (scroll != 0)
+                camera.Zoom(scroll);
 
-            if (input.IsKeyDown(Keys.W))
-                direction += camera.Front;
-            if (input.IsKeyDown(Keys.S))
-                direction -= camera.Front;
-            if (input.IsKeyDown(Keys.A))
-                direction -= camera.Right;
-            if (input.IsKeyDown(Keys.D))
-                direction += camera.Right;
+            // Optional: allow WASD only when dragging
+            if (isDragging)
+            {
+                float delta = (float)args.Time;
+                Vector3 direction = Vector3.Zero;
 
-            if (direction != Vector3.Zero)
-                camera.Move(Vector3.Normalize(direction), delta);
+                if (input.IsKeyDown(Keys.W)) direction += camera.Front;
+                if (input.IsKeyDown(Keys.S)) direction -= camera.Front;
+                if (input.IsKeyDown(Keys.A)) direction -= camera.Right;
+                if (input.IsKeyDown(Keys.D)) direction += camera.Right;
+
+                if (direction != Vector3.Zero)
+                    camera.Move(Vector3.Normalize(direction), delta);
+            }
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
-            base.OnMouseMove(e);
-
-            if (firstMove)
+            if (isDragging)
             {
-                lastMousePos = e.Position;
-                firstMove = false;
-                return;
+                camera.Look(e.Delta.X, -e.Delta.Y); // Invert Y if needed
             }
+        }
 
-            var delta = e.Delta;
-            camera.Look(delta.X, delta.Y);
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            if (e.Button == MouseButton.Left)
+            {
+                isDragging = true;
+                CursorState = CursorState.Hidden;
+            }
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            if (e.Button == MouseButton.Left)
+            {
+                isDragging = false;
+                CursorState = CursorState.Normal;
+            }
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            camera.Zoom(e.OffsetY);
         }
 
         protected override void OnResize(ResizeEventArgs e)

@@ -41,5 +41,12 @@ namespace RollerCoasterSim
         public void Use() => GL.UseProgram(Handle);
         public void SetMatrix4(string name, OpenTK.Mathematics.Matrix4 matrix)
             => GL.UniformMatrix4(GL.GetUniformLocation(Handle, name), false, ref matrix);
+        
+        public void SetInt(string name, int value)
+        {
+            int location = GL.GetUniformLocation(Handle, name);
+            GL.Uniform1(location, value);
+        }
+
     }
 }

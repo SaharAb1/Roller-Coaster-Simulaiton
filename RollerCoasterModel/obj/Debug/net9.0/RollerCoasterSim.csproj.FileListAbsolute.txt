@@ -43,6 +43,7 @@
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Windowing.Common.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Windowing.Desktop.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Windowing.GraphicsLibraryFramework.dll
+/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/StbImageSharp.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/linux-x64/native/libglfw.so.3.3
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/osx-arm64/native/libglfw.3.dylib
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/osx-x64/native/libglfw.3.dylib

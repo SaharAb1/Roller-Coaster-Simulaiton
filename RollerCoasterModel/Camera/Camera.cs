@@ -13,7 +13,7 @@ namespace RollerCoasterSim.Camera
         private float yaw = -90f;
 
         private float speed = 3.0f;
-        private float sensitivity = 0.2f;
+        private float sensitivity = 0.05f;
 
         public FreeCamera(Vector3 position)
         {
@@ -31,7 +31,8 @@ namespace RollerCoasterSim.Camera
             yaw += deltaX * sensitivity;
             pitch -= deltaY * sensitivity;
 
-            pitch = MathHelper.Clamp(pitch, -89f, 89f);
+            pitch = MathHelper.Clamp(pitch, -30f, 30f); // ⬅️ tighter up/down range
+
             UpdateVectors();
         }
 
@@ -51,5 +52,18 @@ namespace RollerCoasterSim.Camera
             Right = Vector3.Normalize(Vector3.Cross(Front, Vector3.UnitY));
             Up = Vector3.Normalize(Vector3.Cross(Right, Front));
         }
+
+       public void Zoom(float amount)
+        {
+            float newDistance = (Position + Front * amount).Length;
+
+            // Clamp distance from center point (example range: 2 to 20 units)
+            if (newDistance > 2f && newDistance < 20f)
+            {
+                Position += Front * amount;
+            }
+        }
+
+
     }
 }
