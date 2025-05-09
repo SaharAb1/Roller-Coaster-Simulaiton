@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Program.cs
+using System;
 
 namespace RollerCoasterSim
 {
@@ -7,7 +8,7 @@ namespace RollerCoasterSim
         [STAThread]
         static void Main()
         {
-            using (MainWindow window = new MainWindow(1280, 720, "🎢 Roller Coaster Simulator"))
+            using (MainWindow window = new MainWindow(1280, 720, "🎉 Roller Coaster Simulator"))
             {
                 window.Run();
             }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterSim/RollerCoasterSim/RollerCoasterSim.csproj": {}
+    "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/RollerCoasterSim.csproj": {}
   },
   "projects": {
-    "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterSim/RollerCoasterSim/RollerCoasterSim.csproj": {
+    "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/RollerCoasterSim.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterSim/RollerCoasterSim/RollerCoasterSim.csproj",
+        "projectUniqueName": "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/RollerCoasterSim.csproj",
         "projectName": "RollerCoasterSim",
-        "projectPath": "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterSim/RollerCoasterSim/RollerCoasterSim.csproj",
+        "projectPath": "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/RollerCoasterSim.csproj",
         "packagesPath": "/Users/saharabitbol/.nuget/packages/",
-        "outputPath": "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterSim/RollerCoasterSim/obj/",
+        "outputPath": "/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/saharabitbol/.nuget/NuGet/NuGet.Config"
