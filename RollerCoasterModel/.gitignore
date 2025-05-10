@@ -1,0 +1,23 @@
+# Build artifacts
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Rider/VSCode/JetBrains
+.idea/
+.vscode/
+*.sln.iml
+
+# Do not ignore shaders or source
+!Shaders/
+!*.cs 

@@ -12,6 +12,8 @@ namespace RollerCoasterSim
         private static int _trackVAO;
         private static int _trainVAO;
         private static int _trackIndexCount;
+        private static int _groundVAO;
+        private static int _groundIndexCount;
         private static Vector3 _lightPos = new Vector3(10f, 10f, 10f);
         private static Vector3 _lightColor = new Vector3(1f, 1f, 1f);
 
@@ -27,15 +29,38 @@ namespace RollerCoasterSim
                 return;
             }
 
-            // Create track mesh
-            Console.WriteLine("Renderer.Init: Creating track mesh");
+            CreateGroundMesh();
             CreateTrackMesh();
-
-            // Create train mesh
-            Console.WriteLine("Renderer.Init: Creating train mesh");
             CreateTrainMesh();
 
             Console.WriteLine("Renderer.Init: Initialization complete");
+        }
+
+        private static void CreateGroundMesh()
+        {
+            // Large quad at y = -1
+            float size = 100f;
+            List<float> vertices = new List<float>
+            {
+                -size, -1f, -size,
+                 size, -1f, -size,
+                 size, -1f,  size,
+                -size, -1f,  size
+            };
+            List<uint> indices = new List<uint> { 0, 1, 2, 0, 2, 3 };
+            _groundVAO = GL.GenVertexArray();
+            GL.BindVertexArray(_groundVAO);
+            int vbo = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Count * sizeof(float), vertices.ToArray(), BufferUsageHint.StaticDraw);
+            int ebo = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count * sizeof(uint), indices.ToArray(), BufferUsageHint.StaticDraw);
+            int stride = 3 * sizeof(float);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, stride, 0);
+            GL.EnableVertexAttribArray(0);
+            // Do NOT enable or set up attributes 1 and 2 for the ground
+            _groundIndexCount = indices.Count;
         }
 
         private static void CreateTrackMesh()
@@ -260,64 +285,49 @@ namespace RollerCoasterSim
                 Console.WriteLine("Renderer.Draw: Shader not initialized");
                 return;
             }
-
             GL.UseProgram(_shader);
-
-            // Set common uniforms
             int viewLoc = GL.GetUniformLocation(_shader, "view");
             int projLoc = GL.GetUniformLocation(_shader, "projection");
             int lightPosLoc = GL.GetUniformLocation(_shader, "lightPos");
             int lightColorLoc = GL.GetUniformLocation(_shader, "lightColor");
             int viewPosLoc = GL.GetUniformLocation(_shader, "viewPos");
             int objectColorLoc = GL.GetUniformLocation(_shader, "objectColor");
-
             if (viewLoc == -1 || projLoc == -1 || lightPosLoc == -1 || lightColorLoc == -1 || viewPosLoc == -1 || objectColorLoc == -1)
             {
                 Console.WriteLine("Renderer.Draw: Failed to get uniform locations");
                 return;
             }
-
             GL.UniformMatrix4(viewLoc, false, ref view);
             GL.UniformMatrix4(projLoc, false, ref projection);
             GL.Uniform3(lightPosLoc, _lightPos);
             GL.Uniform3(lightColorLoc, _lightColor);
-
-            // Extract camera position from view matrix
-            Vector3 viewPos = new Vector3(
-                view.M14,
-                view.M24,
-                view.M34
-            );
+            Vector3 viewPos = new Vector3(view.M14, view.M24, view.M34);
             GL.Uniform3(viewPosLoc, viewPos);
-
+            // Draw ground
+            GL.BindVertexArray(_groundVAO);
+            Matrix4 groundModel = Matrix4.Identity;
+            int modelLoc = GL.GetUniformLocation(_shader, "model");
+            GL.UniformMatrix4(modelLoc, false, ref groundModel);
+            GL.Uniform3(objectColorLoc, new Vector3(0.2f, 0.6f, 0.2f)); // green
+            GL.DrawElements(PrimitiveType.Triangles, _groundIndexCount, DrawElementsType.UnsignedInt, 0);
             // Draw track
             GL.BindVertexArray(_trackVAO);
             Matrix4 trackModel = Matrix4.Identity;
-            int modelLoc = GL.GetUniformLocation(_shader, "model");
             GL.UniformMatrix4(modelLoc, false, ref trackModel);
             GL.Uniform3(objectColorLoc, new Vector3(0.7f, 0.7f, 0.7f));
             GL.DrawElements(PrimitiveType.Triangles, _trackIndexCount, DrawElementsType.UnsignedInt, 0);
-
             // Draw train
-            GL.BindVertexArray(_trainVAO);
             Vector3 position = train.GetPosition();
             Vector3 direction = train.GetDirection();
             Vector3 normal = train.GetNormal();
-            Vector3 up = Vector3.Cross(normal, direction);
-
-            Matrix4 trainModel = Matrix4.Identity;
-            trainModel *= Matrix4.CreateTranslation(position);
-            
-            // Create rotation matrix from direction and up vectors
-            Matrix4 rotation = Matrix4.Identity;
-            rotation.Row0 = new Vector4(direction, 0);
-            rotation.Row1 = new Vector4(up, 0);
-            rotation.Row2 = new Vector4(normal, 0);
-            trainModel *= rotation;
-
-            // Scale the train to appropriate size
-            trainModel *= Matrix4.CreateScale(0.5f);
-
+            Vector3 right = Vector3.Normalize(Vector3.Cross(normal, direction));
+            Matrix4 rotation = new Matrix4(
+                new Vector4(right, 0),
+                new Vector4(normal, 0),
+                new Vector4(-direction, 0),
+                new Vector4(0, 0, 0, 1)
+            );
+            Matrix4 trainModel = rotation * Matrix4.CreateTranslation(position) * Matrix4.CreateScale(0.5f);
             GL.UniformMatrix4(modelLoc, false, ref trainModel);
             GL.Uniform3(objectColorLoc, new Vector3(1.0f, 0.0f, 0.0f));
             GL.DrawElements(PrimitiveType.Triangles, 18, DrawElementsType.UnsignedInt, 0);

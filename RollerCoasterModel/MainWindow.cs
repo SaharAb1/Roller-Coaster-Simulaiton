@@ -37,16 +37,12 @@ namespace RollerCoasterSim
         {
             base.OnUpdateFrame(args);
             _train.Update((float)args.Time);
-
             var input = KeyboardState;
             float delta = (float)args.Time;
-
-            // Camera mode switching
             if (input.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.D1)) _cameraMode = CameraMode.Free;
             if (input.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.D2)) _cameraMode = CameraMode.Follow;
             if (input.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.D3)) _cameraMode = CameraMode.Top;
             if (input.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.D4)) _cameraMode = CameraMode.Side;
-
             switch (_cameraMode)
             {
                 case CameraMode.Free:
@@ -85,6 +81,17 @@ namespace RollerCoasterSim
             );
             RollerCoasterSim.Renderer.Draw(view, projection, _train);
             SwapBuffers();
+        }
+
+        protected override void OnResize(ResizeEventArgs e)
+        {
+            base.OnResize(e);
+            GL.Viewport(0, 0, Size.X, Size.Y);
+        }
+
+        protected override void OnUnload()
+        {
+            base.OnUnload();
         }
     }
 }
