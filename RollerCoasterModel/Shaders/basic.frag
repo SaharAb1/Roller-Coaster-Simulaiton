@@ -1,21 +1,22 @@
 #version 330 core
 
-in vec3 FragPos;
 in vec3 Normal;
+in vec3 FragPos;
 in vec2 TexCoord;
 
-out vec4 FragColor;
-
 uniform vec3 lightPos;
-uniform vec3 lightColor;
 uniform vec3 viewPos;
+uniform vec3 lightColor;
 uniform vec3 objectColor;
+uniform sampler2D mainTexture;
 uniform bool useTexture;
+
+out vec4 FragColor;
 
 void main()
 {
     // Ambient
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * lightColor;
 
     // Diffuse
@@ -31,6 +32,7 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
-    vec3 result = (ambient + diffuse + specular) * objectColor;
+    vec3 baseColor = useTexture ? texture(mainTexture, TexCoord).rgb : objectColor;
+    vec3 result = (ambient + diffuse + specular) * baseColor;
     FragColor = vec4(result, 1.0);
-}
+} 

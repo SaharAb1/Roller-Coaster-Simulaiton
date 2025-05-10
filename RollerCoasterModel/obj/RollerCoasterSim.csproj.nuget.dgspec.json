@@ -44,6 +44,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "ImGui.NET": {
+              "target": "Package",
+              "version": "[1.89.9.3, )"
+            },
             "OpenTK": {
               "target": "Package",
               "version": "[4.7.6, )"
