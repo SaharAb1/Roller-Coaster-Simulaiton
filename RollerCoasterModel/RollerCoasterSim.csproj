@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTK" Version="4.7.6" />
+    <PackageReference Include="OpenTK" Version="4.8.1" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
     <PackageReference Include="ImGui.NET" Version="1.89.9.3" />
   </ItemGroup>

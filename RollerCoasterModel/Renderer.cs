@@ -90,7 +90,6 @@ namespace RollerCoasterSim
                 GL.UseProgram(_shaderProgram);
                 GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "lightPos"), new Vector3(50, 50, 50));
                 GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "lightColor"), new Vector3(1, 1, 1));
-                GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "viewPos"), new Vector3(0, 10, 20));
 
                 // Enable depth testing
                 GL.Enable(EnableCap.DepthTest);

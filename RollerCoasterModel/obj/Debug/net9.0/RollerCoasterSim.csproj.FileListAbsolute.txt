@@ -14,7 +14,6 @@
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Graphics.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Input.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Mathematics.dll
-/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.OpenAL.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Windowing.Common.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Windowing.Desktop.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Windowing.GraphicsLibraryFramework.dll
@@ -36,3 +35,5 @@
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/win-arm64/native/cimgui.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/win-x64/native/cimgui.dll
 /Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/win-x86/native/cimgui.dll
+/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/OpenTK.Audio.OpenAL.dll
+/Users/saharabitbol/Roller-Coaster-Simulaiton/RollerCoasterModel/bin/Debug/net9.0/runtimes/linux-x64/native/libglfw-wayland.so.3.3
