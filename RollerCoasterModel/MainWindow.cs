@@ -11,9 +11,10 @@ namespace RollerCoasterSim
     public class MainWindow : GameWindow
     {
         private RollerCoasterSim.Track.RollerCoasterTrack _track = null!;
-        private RollerCoasterSim.Train _train = null!;
+        private RollerCoasterSim.Train.Train _train = null!;
         private RollerCoasterSim.Camera.FreeCamera _camera = null!;
         private CameraMode _cameraMode = CameraMode.Free;
+        private Renderer _renderer = null!;
 
         public MainWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -27,10 +28,11 @@ namespace RollerCoasterSim
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             Console.WriteLine("MainWindow: OnLoad");
             _track = new RollerCoasterSim.Track.RollerCoasterTrack();
-            _train = new RollerCoasterSim.Train(_track);
+            _train = new RollerCoasterSim.Train.Train(_track);
             _train.SetSpeed(5.0f);
             _camera = new RollerCoasterSim.Camera.FreeCamera(new Vector3(0, 10, 30));
-            RollerCoasterSim.Renderer.Init();
+            _renderer = new Renderer();
+            _renderer.Init();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -79,7 +81,7 @@ namespace RollerCoasterSim
                 0.1f,
                 100f
             );
-            RollerCoasterSim.Renderer.Draw(view, projection, _train);
+            _renderer.Draw(view, projection, _train);
             SwapBuffers();
         }
 

@@ -1,7 +1,7 @@
 using OpenTK.Mathematics;
 using RollerCoasterSim.Track;
 
-namespace RollerCoasterSim
+namespace RollerCoasterSim.Train
 {
     public class Train
     {
