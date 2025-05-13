@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RollerCoasterSim")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a51f903d5e85b88d4fc11a66aa7165d27fea43c9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4ef1400d1925fde471f98ac0420e0593730c1c2b")]
 [assembly: System.Reflection.AssemblyProductAttribute("RollerCoasterSim")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RollerCoasterSim")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
