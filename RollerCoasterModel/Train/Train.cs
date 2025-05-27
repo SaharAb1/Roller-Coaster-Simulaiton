@@ -1,54 +1,53 @@
 using OpenTK.Mathematics;
 using RollerCoasterSim.Track;
+using System.Collections.Generic;
 
 namespace RollerCoasterSim.Train
 {
     public class Train
     {
         private RollerCoasterTrack track;
-        private float speed = 5.0f;
-        private float trackParameter = 0.0f;
-        private Vector3 position;
-        private Vector3 direction;
-        private Vector3 normal;
+        private List<TrainCar> cars;
+        private float speed = 50.0f;
+        private const float CAR_SPACING = 0.02f; // Reduced from 0.05f to 0.02f (2% of track length)
 
-        public Train(RollerCoasterTrack track)
+        public Train(RollerCoasterTrack track, int numCars = 3)
         {
             this.track = track;
-            UpdatePosition();
+            cars = new List<TrainCar>();
+            
+            // Create cars with initial spacing
+            float trackLength = track.GetTrackLength();
+            float spacing = CAR_SPACING * trackLength;
+            
+            for (int i = 0; i < numCars; i++)
+            {
+                float initialParam = (i * spacing) / trackLength;
+                cars.Add(new TrainCar(track, initialParam));
+            }
         }
 
         public void Update(float deltaTime)
         {
-            // Update track parameter based on speed and track length
-            float trackLength = track.GetTrackLength();
-            trackParameter += (speed * deltaTime) / trackLength;
-            
-            // Wrap around when we complete the track
-            if (trackParameter >= 1.0f)
+            foreach (var car in cars)
             {
-                trackParameter -= 1.0f;
+                car.Update(deltaTime);
             }
-            
-            UpdatePosition();
         }
 
-        private void UpdatePosition()
-        {
-            position = track.GetPosition(trackParameter);
-            direction = track.GetDirection(trackParameter);
-            normal = track.GetNormal(trackParameter);
-        }
-
-        public Vector3 GetPosition() => position;
-        public Vector3 GetDirection() => direction;
-        public Vector3 GetNormal() => normal;
-        public float GetSpeed() => speed;
-        public float GetTrackParameter() => trackParameter;
-
+        public Vector3 GetPosition() => cars[0].GetPosition();
+        public Vector3 GetDirection() => cars[0].GetDirection();
+        public Vector3 GetNormal() => cars[0].GetNormal();
+        public float GetTrackParameter() => cars[0].GetTrackParameter();
         public void SetSpeed(float newSpeed)
         {
-            speed = Math.Clamp(newSpeed, 0.0f, 20.0f);
+            speed = newSpeed;
+            foreach (var car in cars)
+            {
+                car.SetSpeed(newSpeed);
+            }
         }
+
+        public List<TrainCar> GetCars() => cars;
     }
 }
