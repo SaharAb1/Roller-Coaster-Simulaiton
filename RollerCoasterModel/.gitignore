@@ -21,3 +21,8 @@ Thumbs.db
 # Do not ignore shaders or source
 !Shaders/
 !*.cs 
+
+# Compiled binaries
+*.dll
+*.exe
+*.pdb

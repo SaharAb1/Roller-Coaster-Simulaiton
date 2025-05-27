@@ -23,19 +23,20 @@ namespace RollerCoasterSim.Track
             // Station (start/end)
             _controlPoints.Add(new Vector3(0, 0, 0)); // Station
 
-            // First hill
-            _controlPoints.Add(new Vector3(10, 5, 0));
+            // First hill with some Z variation
+            _controlPoints.Add(new Vector3(10, 5, 5));
 
-            // Loop
-            _controlPoints.Add(new Vector3(20, 10, 0));
-            _controlPoints.Add(new Vector3(30, 10, 0));
-            _controlPoints.Add(new Vector3(40, 5, 0));
+            // Loop with Z variation
+            _controlPoints.Add(new Vector3(20, 10, 10));
+            _controlPoints.Add(new Vector3(30, 10, -5));
+            _controlPoints.Add(new Vector3(40, 5, -10));
 
-            // Second hill
-            _controlPoints.Add(new Vector3(50, 8, 0));
+            // Second hill with Z variation
+            _controlPoints.Add(new Vector3(50, 8, -5));
 
-            // Return to station
+            // Return to station with a curve
             _controlPoints.Add(new Vector3(60, 0, 0));
+            _controlPoints.Add(new Vector3(30, 0, 0));
             _controlPoints.Add(new Vector3(0, 0, 0)); // Back to station
         }
 
@@ -53,10 +54,13 @@ namespace RollerCoasterSim.Track
 
         public Vector3 GetDirection(float t)
         {
-            float delta = 0.01f;
-            Vector3 pos1 = GetPosition(t);
-            Vector3 pos2 = GetPosition((t + delta) % 1.0f);
-            return Vector3.Normalize(pos2 - pos1);
+            t = t % 1.0f;
+            int numSegments = _controlPoints.Count - 1;
+            float segmentLength = 1.0f / numSegments;
+            int segment = (int)(t / segmentLength);
+            Vector3 p0 = _controlPoints[segment];
+            Vector3 p1 = _controlPoints[(segment + 1) % _controlPoints.Count];
+            return Vector3.Normalize(p1 - p0);
         }
 
         public float GetBankAngle(float t)
@@ -67,13 +71,18 @@ namespace RollerCoasterSim.Track
             return angle * 0.5f;
         }
 
-        public Vector3 GetNormal(float t)
-        {
-            // Calculate normal using cross product of direction and up vector
-            Vector3 direction = GetDirection(t);
-            Vector3 up = Vector3.UnitY;
-            return Vector3.Normalize(Vector3.Cross(direction, up));
-        }
+      public Vector3 GetNormal(float t)
+{
+    Vector3 tangent = GetDirection(t);
+    Vector3 binormal = Vector3.UnitY;
+
+    // חישוב נורמל אורכי למשטח (up אמיתי)
+    Vector3 normal = Vector3.Cross(tangent, binormal).Normalized();
+    normal = Vector3.Cross(normal, tangent).Normalized();
+
+    return normal;
+}
+
 
         public List<Vector3> GetTrackPoints()
         {
@@ -82,7 +91,14 @@ namespace RollerCoasterSim.Track
 
         public float GetTrackLength()
         {
-            return _trackLength;
+            float length = 0;
+            for (int i = 0; i < _controlPoints.Count; i++)
+            {
+                Vector3 p0 = _controlPoints[i];
+                Vector3 p1 = _controlPoints[(i + 1) % _controlPoints.Count];
+                length += Vector3.Distance(p0, p1);
+            }
+            return length;
         }
     }
 } 

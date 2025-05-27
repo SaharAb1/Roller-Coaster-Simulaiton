@@ -29,7 +29,7 @@ namespace RollerCoasterSim
             Console.WriteLine("MainWindow: OnLoad");
             _track = new RollerCoasterSim.Track.RollerCoasterTrack();
             _train = new RollerCoasterSim.Train.Train(_track);
-            _train.SetSpeed(5.0f);
+            _train.SetSpeed(15.0f);
             _camera = new RollerCoasterSim.Camera.FreeCamera(new Vector3(0, 10, 30));
             _renderer = new Renderer();
             _renderer.Init();
