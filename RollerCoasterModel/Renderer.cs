@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using RollerCoasterSim.Track;
 using RollerCoasterSim.Train;
+using RollerCoasterSim.Objects;
 
 namespace RollerCoasterSim
 {
@@ -65,6 +66,7 @@ namespace RollerCoasterSim
         private int _waterEBO;
         private int _waterIndexCount;
         private float _waterTime = 0;
+        public TreeObject Trees { get; private set; } = new TreeObject();
 
         public void Init()
         {
@@ -120,6 +122,9 @@ namespace RollerCoasterSim
 
                 // Create track texture
                 _trackTexture = CreateTrackTexture();
+
+                Trees.GeneratePositions(GetTerrainHeight);
+                Trees.CreateMesh();
 
                 Console.WriteLine("Renderer.Init: Initialization completed successfully");
             }
@@ -738,7 +743,7 @@ namespace RollerCoasterSim
                 DrawTrain(train);
 
                 // Draw trees
-                DrawTrees();
+                Trees.Draw(_shaderProgram);
 
                 // Draw platform
                 DrawPlatform();
@@ -840,49 +845,6 @@ namespace RollerCoasterSim
                 Vector3 front = carCenters[i + 1] + cars[i + 1].GetDirection() * (carLength/2 - rodOffset) + cars[i + 1].GetNormal() * VERTICAL_OFFSET;
                 Vector3 rodColor = new Vector3(0.1f, 0.1f, 0.1f);  // Black color for rods
                 DrawCylinder(back, front, rodRadius, rodColor);
-            }
-        }
-
-        private void DrawTrees()
-        {
-            for (int i = 0; i < _treePositions.Count; i++)
-            {
-                Vector3 pos = _treePositions[i];
-                var scale = _treeScales[i];
-                
-                // Draw trunk
-                GL.BindVertexArray(_treeTrunkVAO);
-                Matrix4 trunkModel = Matrix4.CreateScale(scale.trunkRadius, scale.trunkHeight, scale.trunkRadius) * 
-                                   Matrix4.CreateTranslation(pos);
-                GL.UniformMatrix4(GL.GetUniformLocation(_shaderProgram, "model"), false, ref trunkModel);
-                GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "objectColor"), new Vector3(0.5f, 0.25f, 0.1f)); // Brown
-                GL.DrawElements(PrimitiveType.Triangles, _treeTrunkIndexCount, DrawElementsType.UnsignedInt, 0);
-                
-                // Draw leaves
-                GL.BindVertexArray(_treeLeavesVAO);
-                Matrix4 leavesModel = Matrix4.CreateScale(scale.leavesRadius, scale.leavesHeight, scale.leavesRadius) * 
-                                    Matrix4.CreateTranslation(pos + new Vector3(0, scale.trunkHeight, 0));
-                GL.UniformMatrix4(GL.GetUniformLocation(_shaderProgram, "model"), false, ref leavesModel);
-                
-                // Different colors for different tree types
-                Vector3 leavesColor;
-                if (scale.trunkHeight > 3.5f) // Pine trees
-                    leavesColor = new Vector3(0.1f, 0.4f, 0.1f); // Dark green
-                else if (scale.trunkHeight > 2.0f) // Deciduous trees
-                    leavesColor = new Vector3(0.2f, 0.5f, 0.2f); // Medium green
-                else // Bushes
-                    leavesColor = new Vector3(0.15f, 0.45f, 0.15f); // Light green
-                    
-                GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "objectColor"), leavesColor);
-                GL.DrawElements(PrimitiveType.Triangles, _treeLeavesIndexCount, DrawElementsType.UnsignedInt, 0);
-                
-                // Draw shadow
-                Vector3 sunPos = new Vector3(100, 150, 100);
-                Vector3 sunDir = Vector3.Normalize(sunPos);
-                Matrix4 shadowModel = GetShadowMatrix(sunDir) * Matrix4.CreateTranslation(pos);
-                GL.UniformMatrix4(GL.GetUniformLocation(_shaderProgram, "model"), false, ref shadowModel);
-                GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "objectColor"), new Vector3(0.1f, 0.1f, 0.1f)); // Dark shadow
-                GL.DrawElements(PrimitiveType.Triangles, _treeTrunkIndexCount, DrawElementsType.UnsignedInt, 0);
             }
         }
 
@@ -1283,7 +1245,7 @@ namespace RollerCoasterSim
             Console.WriteLine($"Created sky mesh with {vertices.Count/8} vertices and {indices.Count/3} triangles");
         }
 
-        private float GetTerrainHeight(float x, float z)
+        public float GetTerrainHeight(float x, float z)
         {
             // Simple undulating terrain using sine/cosine
             return -1.0f + 2.0f * MathF.Sin(0.05f * x) * MathF.Cos(0.05f * z);

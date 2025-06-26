@@ -1,0 +1,102 @@
+total 240
+drwxr-xr-x@ 3 saharabitbol  staff     96 Jun 26 21:09 Assets
+drwxr-xr-x@ 3 saharabitbol  staff     96 Jun 26 21:18 bin
+drwxr-xr-x@ 4 saharabitbol  staff    128 Jun 26 21:09 Camera
+-rw-r--r--@ 1 saharabitbol  staff    254 Jun 26 21:09 imgui.ini
+-rw-r--r--@ 1 saharabitbol  staff   8078 Jun 26 21:17 MainWindow.cs
+drwxr-xr-x@ 8 saharabitbol  staff    256 Jun 26 21:18 obj
+drwxr-xr-x@ 3 saharabitbol  staff     96 Jun 26 21:13 Objects
+-rw-r--r--@ 1 saharabitbol  staff    991 Jun 26 21:09 Program.cs
+-rw-r--r--@ 1 saharabitbol  staff   1318 Jun 26 21:09 README.md
+-rw-r--r--@ 1 saharabitbol  staff  93262 Jun 26 21:14 Renderer.cs
+-rw-r--r--@ 1 saharabitbol  staff   1102 Jun 26 21:09 RollerCoasterModel.sln
+-rw-r--r--@ 1 saharabitbol  staff    509 Jun 26 21:09 RollerCoasterSim.csproj
+drwxr-xr-x@ 9 saharabitbol  staff    288 Jun 26 21:09 Shaders
+drwxr-xr-x@ 3 saharabitbol  staff     96 Jun 26 21:09 Track
+drwxr-xr-x@ 4 saharabitbol  staff    128 Jun 26 21:09 Train
+drwxr-xr-x@ 4 saharabitbol  staff    128 Jun 26 21:09 UI
+
+RollerCoasterModel/Assets:
+total 0
+drwxr-xr-x@ 3 saharabitbol  staff  96 Jun 26 21:09 UI
+
+RollerCoasterModel/Assets/UI:
+total 56
+-rw-r--r--@ 1 saharabitbol  staff  24632 Jun 26 21:09 hand_cursor.png
+
+RollerCoasterModel/bin:
+total 0
+drwxr-xr-x@ 3 saharabitbol  staff  96 Jun 26 21:18 Debug
+
+RollerCoasterModel/bin/Debug:
+total 0
+drwxr-xr-x@ 2 saharabitbol  staff  64 Jun 26 21:18 net9.0
+
+RollerCoasterModel/bin/Debug/net9.0:
+total 0
+
+RollerCoasterModel/Camera:
+total 16
+-rw-r--r--@ 1 saharabitbol  staff   133 Jun 26 21:09 CameraMode.cs
+-rw-r--r--@ 1 saharabitbol  staff  3384 Jun 26 21:09 FreeCamera.cs
+
+RollerCoasterModel/obj:
+total 80
+drwxr-xr-x@ 3 saharabitbol  staff     96 Jun 26 21:18 Debug
+-rw-r--r--@ 1 saharabitbol  staff  22319 Jun 26 21:18 project.assets.json
+-rw-r--r--@ 1 saharabitbol  staff   1962 Jun 26 21:18 project.nuget.cache
+-rw-r--r--@ 1 saharabitbol  staff   2467 Jun 26 21:18 RollerCoasterSim.csproj.nuget.dgspec.json
+-rw-r--r--@ 1 saharabitbol  staff   1137 Jun 26 21:18 RollerCoasterSim.csproj.nuget.g.props
+-rw-r--r--@ 1 saharabitbol  staff    149 Jun 26 21:18 RollerCoasterSim.csproj.nuget.g.targets
+
+RollerCoasterModel/obj/Debug:
+total 0
+drwxr-xr-x@ 14 saharabitbol  staff  448 Jun 26 21:18 net9.0
+
+RollerCoasterModel/obj/Debug/net9.0:
+total 88
+drwxr-xr-x@ 2 saharabitbol  staff     64 Jun 26 21:18 ref
+drwxr-xr-x@ 2 saharabitbol  staff     64 Jun 26 21:18 refint
+-rw-r--r--@ 1 saharabitbol  staff   1000 Jun 26 21:18 RollerCoasterSim.AssemblyInfo.cs
+-rw-r--r--@ 1 saharabitbol  staff     65 Jun 26 21:18 RollerCoasterSim.AssemblyInfoInputs.cache
+-rw-r--r--@ 1 saharabitbol  staff  10783 Jun 26 21:18 RollerCoasterSim.assets.cache
+-rw-r--r--@ 1 saharabitbol  staff   2941 Jun 26 21:18 RollerCoasterSim.csproj.AssemblyReference.cache
+-rw-r--r--@ 1 saharabitbol  staff     65 Jun 26 21:18 RollerCoasterSim.csproj.CoreCompileInputs.cache
+-rw-r--r--@ 1 saharabitbol  staff    767 Jun 26 21:18 RollerCoasterSim.csproj.FileListAbsolute.txt
+-rw-r--r--@ 1 saharabitbol  staff    699 Jun 26 21:18 RollerCoasterSim.GeneratedMSBuildEditorConfig.editorconfig
+-rw-r--r--@ 1 saharabitbol  staff    287 Jun 26 21:18 RollerCoasterSim.GlobalUsings.g.cs
+-rw-r--r--@ 1 saharabitbol  staff    181 Jun 26 21:18 RollerCoasterSim.sourcelink.json
+
+RollerCoasterModel/obj/Debug/net9.0/ref:
+total 0
+
+RollerCoasterModel/obj/Debug/net9.0/refint:
+total 0
+
+RollerCoasterModel/Objects:
+total 24
+-rw-r--r--@ 1 saharabitbol  staff  9743 Jun 26 21:14 TreeObject.cs
+
+RollerCoasterModel/Shaders:
+total 56
+-rw-r--r--@ 1 saharabitbol  staff   996 Jun 26 21:09 basic.frag
+-rw-r--r--@ 1 saharabitbol  staff   469 Jun 26 21:09 basic.vert
+-rw-r--r--@ 1 saharabitbol  staff  1820 Jun 26 21:09 shader.cs
+-rw-r--r--@ 1 saharabitbol  staff   856 Jun 26 21:09 shader.frag
+-rw-r--r--@ 1 saharabitbol  staff   474 Jun 26 21:09 shader.vert
+-rw-r--r--@ 1 saharabitbol  staff   138 Jun 26 21:09 ui.frag
+-rw-r--r--@ 1 saharabitbol  staff   265 Jun 26 21:09 ui.vert
+
+RollerCoasterModel/Track:
+total 8
+-rw-r--r--@ 1 saharabitbol  staff  3378 Jun 26 21:09 RollerCoasterTrack.cs
+
+RollerCoasterModel/Train:
+total 16
+-rw-r--r--@ 1 saharabitbol  staff  1606 Jun 26 21:09 Train.cs
+-rw-r--r--@ 1 saharabitbol  staff  1649 Jun 26 21:09 TrainCar.cs
+
+RollerCoasterModel/UI:
+total 48
+-rw-r--r--@ 1 saharabitbol  staff  17356 Jun 26 21:09 ImGuiController.cs
+-rw-r--r--@ 1 saharabitbol  staff   3781 Jun 26 21:09 UICursor.cs
