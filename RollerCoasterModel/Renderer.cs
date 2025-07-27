@@ -67,6 +67,56 @@ namespace RollerCoasterSim
         private int _waterIndexCount;
         private float _waterTime = 0;
         public TreeObject Trees { get; private set; } = new TreeObject();
+        
+        // UI Control Properties
+        private bool _useTrackTexture = true;
+        private int _lightColorIndex = 0;
+        private float _lightIntensity = 1.0f;
+        private int _leafCount = 200;
+        private readonly Vector3[] _lightColorOptions = new Vector3[]
+        {
+            new Vector3(1f, 1f, 1f),    // White
+            new Vector3(1f, 0.9f, 0.7f), // Warm
+            new Vector3(0.7f, 0.9f, 1f), // Cool
+            new Vector3(1f, 0.3f, 0.3f)  // Red
+        };
+        
+        // Public properties for UI control
+        public bool TrackTextureEnabled 
+        { 
+            get => _useTrackTexture; 
+            set => _useTrackTexture = value; 
+        }
+        
+        public int LightColorIndex 
+        { 
+            get => _lightColorIndex; 
+            set 
+            { 
+                _lightColorIndex = value % _lightColorOptions.Length; 
+                UpdateLightUniform();
+            } 
+        }
+        
+        public float LightIntensity 
+        { 
+            get => _lightIntensity; 
+            set 
+            { 
+                _lightIntensity = Math.Clamp(value, 0.1f, 3.0f); 
+                UpdateLightUniform();
+            } 
+        }
+        
+        public int LeafCount 
+        { 
+            get => _leafCount; 
+            set 
+            { 
+                _leafCount = Math.Clamp(value, 50, 500); 
+                GenerateLeafParticles(_leafCount);
+            } 
+        }
 
         public void Init()
         {
@@ -125,6 +175,9 @@ namespace RollerCoasterSim
 
                 Trees.GeneratePositions(GetTerrainHeight);
                 Trees.CreateMesh();
+
+                // Initialize light settings
+                UpdateLightUniform();
 
                 Console.WriteLine("Renderer.Init: Initialization completed successfully");
             }
@@ -770,14 +823,23 @@ namespace RollerCoasterSim
             Matrix4 trackModel = Matrix4.CreateTranslation(0, 1.5f, 0);
             GL.UniformMatrix4(GL.GetUniformLocation(_shaderProgram, "model"), false, ref trackModel);
             
-            // Enable texture
-            GL.Uniform1(GL.GetUniformLocation(_shaderProgram, "useTexture"), 1);
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, _trackTexture);
-            GL.Uniform1(GL.GetUniformLocation(_shaderProgram, "texture0"), 0);
-            
-            // Set base color (will be multiplied with texture)
-            GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "objectColor"), new Vector3(0.8f, 0.8f, 0.8f));
+            if (_useTrackTexture)
+            {
+                // Enable texture
+                GL.Uniform1(GL.GetUniformLocation(_shaderProgram, "useTexture"), 1);
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.BindTexture(TextureTarget.Texture2D, _trackTexture);
+                GL.Uniform1(GL.GetUniformLocation(_shaderProgram, "texture0"), 0);
+                
+                // Set base color (will be multiplied with texture)
+                GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "objectColor"), new Vector3(0.8f, 0.8f, 0.8f));
+            }
+            else
+            {
+                // Disable texture and use solid color
+                GL.Uniform1(GL.GetUniformLocation(_shaderProgram, "useTexture"), 0);
+                GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "objectColor"), new Vector3(0.6f, 0.6f, 0.6f));
+            }
             
             GL.DrawElements(PrimitiveType.Triangles, _trackIndexCount, DrawElementsType.UnsignedInt, 0);
             
@@ -1881,6 +1943,49 @@ namespace RollerCoasterSim
             GL.Uniform1(GL.GetUniformLocation(_shaderProgram, "isWater"), 0);
             
             GL.Disable(EnableCap.Blend);
+        }
+
+        // UI Control Methods
+        public void ToggleTrackTexture()
+        {
+            _useTrackTexture = !_useTrackTexture;
+        }
+        
+        public void CycleLightColor()
+        {
+            _lightColorIndex = (_lightColorIndex + 1) % _lightColorOptions.Length;
+            UpdateLightUniform();
+        }
+        
+        public void AdjustLightIntensity(float delta)
+        {
+            _lightIntensity = Math.Clamp(_lightIntensity + delta, 0.1f, 3.0f);
+            UpdateLightUniform();
+        }
+        
+        public void SetLightColorIndex(int index)
+        {
+            _lightColorIndex = index % _lightColorOptions.Length;
+            UpdateLightUniform();
+        }
+        
+        public void SetLightIntensity(float intensity)
+        {
+            _lightIntensity = Math.Clamp(intensity, 0.1f, 3.0f);
+            UpdateLightUniform();
+        }
+        
+        public void SetLeafCount(int count)
+        {
+            _leafCount = Math.Clamp(count, 50, 500);
+            GenerateLeafParticles(_leafCount);
+        }
+        
+        private void UpdateLightUniform()
+        {
+            _lightColor = _lightColorOptions[_lightColorIndex] * _lightIntensity;
+            GL.UseProgram(_shaderProgram);
+            GL.Uniform3(GL.GetUniformLocation(_shaderProgram, "lightColor"), _lightColor);
         }
 
         public void Dispose()

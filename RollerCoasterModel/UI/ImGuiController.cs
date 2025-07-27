@@ -32,10 +32,18 @@ namespace RollerCoasterSim.UI
         {
             _windowWidth = width;
             _windowHeight = height;
+            
+            // Initialize ImGui context
             ImGui.CreateContext();
             ImGui.StyleColorsDark();
+            
+            // Set up key mappings
             SetKeyMappings();
+            
+            // Create OpenGL resources
             CreateDeviceResources();
+            
+            Console.WriteLine("ImGuiController: Initialized successfully");
         }
 
         public void WindowResized(int width, int height)
@@ -59,27 +67,22 @@ namespace RollerCoasterSim.UI
             return ImGui.Button(label);
         }
 
-        public void RenderUI(ref CameraMode cameraMode, dynamic train)
+        public void RenderUI(ref CameraMode cameraMode, dynamic train, ref bool useOrthographicProjection, dynamic renderer)
         {
             if (!_frameBegun)
                 ImGui.NewFrame();
             _frameBegun = true;
 
+            // Simple test window
             ImGui.SetNextWindowPos(new System.Numerics.Vector2(10, 10), ImGuiCond.FirstUseEver);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(300, 200), ImGuiCond.FirstUseEver);
-            if (ImGui.Begin("Train Controls"))
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(250, 150), ImGuiCond.FirstUseEver);
+            if (ImGui.Begin("Roller Coaster Controls"))
             {
-                float speed = train.GetSpeed();
-                if (ImGui.SliderFloat("Speed", ref speed, 0.0f, 20.0f))
-                {
-                    train.SetSpeed(speed);
-                }
+                ImGui.Text("🎢 Roller Coaster Simulator");
                 ImGui.Separator();
-                ImGui.Text($"Position: {train.GetPosition()}");
-                ImGui.Text($"Speed: {train.GetSpeed():F2} m/s");
-                ImGui.Text($"Track Progress: {train.GetTrackParameter() * 100:F2}%");
-                ImGui.Separator();
-                ImGui.Text("Camera Mode:");
+                
+                // Camera controls
+                ImGui.Text("Camera:");
                 if (ImGui.Button("Free Camera"))
                     cameraMode = CameraMode.Free;
                 if (ImGui.Button("Follow Train"))
@@ -88,8 +91,23 @@ namespace RollerCoasterSim.UI
                     cameraMode = CameraMode.Top;
                 if (ImGui.Button("Side View"))
                     cameraMode = CameraMode.Side;
+                
+                ImGui.Separator();
+                
+                // Projection toggle
+                if (ImGui.Checkbox("Orthographic View", ref useOrthographicProjection))
+                {
+                    // Checkbox directly modifies the reference
+                }
+                
+                ImGui.Separator();
+                
+                // Simple info
+                ImGui.Text($"Current Mode: {cameraMode}");
+                ImGui.Text($"Projection: {(useOrthographicProjection ? "Ortho" : "Perspective")}");
             }
             ImGui.End();
+            
             ImGui.Render();
         }
 
