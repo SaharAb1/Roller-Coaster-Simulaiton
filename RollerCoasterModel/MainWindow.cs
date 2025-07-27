@@ -2,7 +2,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using System;
+using System; 
 using RollerCoasterSim.Objects;
 
 namespace RollerCoasterSim
